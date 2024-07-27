@@ -336,6 +336,8 @@ libBulletDynamics_la_SOURCES = \
 		BulletDynamics/Character/btKinematicCharacterController.cpp \
 		BulletDynamics/Character/btKinematicCharacterController.h \
 		BulletDynamics/Character/btCharacterControllerInterface.h \
+		BulletDynamics/PhysicsResolver/btPhysicsResolver.cpp \
+		BulletDynamics/PhysicsResolver/btPhysicsResolver.h \
 		BulletDynamics/Dynamics/btActionInterface.h \
 		BulletDynamics/Dynamics/btSimpleDynamicsWorld.h \
 		BulletDynamics/Dynamics/btRigidBody.h \
@@ -450,6 +452,7 @@ nobase_bullet_include_HEADERS += \
 	BulletDynamics/ConstraintSolver/btSolverBody.h \
 	BulletDynamics/Character/btCharacterControllerInterface.h \
 	BulletDynamics/Character/btKinematicCharacterController.h \
+	BulletDynamics/PhysicsResolver/btPhysicsResolver.h \
 	BulletDynamics/Featherstone/btMultiBody.h \
 	BulletDynamics/Featherstone/btMultiBodyConstraintSolver.h \
 	BulletDynamics/Featherstone/btMultiBodyDynamicsWorld.h \
@@ -459,11 +462,11 @@ nobase_bullet_include_HEADERS += \
 	BulletDynamics/Featherstone/btMultiBodyConstraint.h \
 	BulletDynamics/Featherstone/btMultiBodyPoint2Point.h \
 	BulletDynamics/MLCPSolvers/btDantzigLCP.h \
-        BulletDynamics/MLCPSolvers/btDantzigSolver.h \
-        BulletDynamics/MLCPSolvers/btMLCPSolver.h \
-        BulletDynamics/MLCPSolvers/btMLCPSolverInterface.h \
-        BulletDynamics/MLCPSolvers/btPATHSolver.h \
-        BulletDynamics/MLCPSolvers/btSolveProjectedGaussSeidel.h \
+	BulletDynamics/MLCPSolvers/btDantzigSolver.h \
+	BulletDynamics/MLCPSolvers/btMLCPSolver.h \
+	BulletDynamics/MLCPSolvers/btMLCPSolverInterface.h \
+	BulletDynamics/MLCPSolvers/btPATHSolver.h \
+	BulletDynamics/MLCPSolvers/btSolveProjectedGaussSeidel.h \
 	BulletCollision/CollisionShapes/btShapeHull.h \
 	BulletCollision/CollisionShapes/btConcaveShape.h \
 	BulletCollision/CollisionShapes/btCollisionMargin.h \

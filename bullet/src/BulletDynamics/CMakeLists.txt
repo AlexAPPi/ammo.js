@@ -33,6 +33,7 @@ SET(BulletDynamics_SRCS
 	Featherstone/btMultiBodyJointMotor.cpp
 	MLCPSolvers/btDantzigLCP.cpp
 	MLCPSolvers/btMLCPSolver.cpp
+	PhysicsResolver/btPhysicsResolver.cpp
 )
 
 SET(Root_HDRS
@@ -101,7 +102,9 @@ SET(Character_HDRS
 	Character/btKinematicCharacterController.h
 )
 
-
+SET(PhysicsResolver_HDRS
+	PhysicsResolver/btPhysicsResolver.h
+)
 
 SET(BulletDynamics_HDRS
 	${Root_HDRS}
@@ -111,6 +114,7 @@ SET(BulletDynamics_HDRS
 	${Character_HDRS}
 	${Featherstone_HDRS}
 	${MLCPSolvers_HDRS}
+	${PhysicsResolver_HDRS}
 )
 
 
@@ -148,6 +152,7 @@ DESTINATION ${INCLUDE_INSTALL_DIR}/BulletDynamics)
 			SET_PROPERTY(SOURCE ${Character_HDRS} PROPERTY MACOSX_PACKAGE_LOCATION Headers/Character)
 			SET_PROPERTY(SOURCE ${Featherstone_HDRS} PROPERTY MACOSX_PACKAGE_LOCATION Headers/Featherstone)
 			SET_PROPERTY(SOURCE ${MLCPSolvers_HDRS} PROPERTY MACOSX_PACKAGE_LOCATION Headers/MLCPSolvers)
+			SET_PROPERTY(SOURCE ${PhysicsResolver_HDRS} PROPERTY MACOSX_PACKAGE_LOCATION Headers/PhysicsResolver)
 		ENDIF (APPLE AND BUILD_SHARED_LIBS AND FRAMEWORK)
 	ENDIF (NOT INTERNAL_CREATE_DISTRIBUTABLE_MSVC_PROJECTFILES)
 ENDIF (INSTALL_LIBS)

@@ -269,6 +269,20 @@ interface ClosestConvexResultCallback {
 };
 ClosestConvexResultCallback implements ConvexResultCallback;
 
+[Prefix="btCollisionWorld::"]
+interface AllHitsConvexResultCallback {
+  void AllHitsConvexResultCallback([Const, Ref] btVector3 convexFromWorld, [Const, Ref] btVector3 convexToWorld);
+  [Const] attribute btCollisionObject m_closestHitCollisionObject;
+  attribute float m_closestHitCollisionFraction;
+  [Value] attribute btConstCollisionObjectArray m_hitCollisionObjects;
+  [Value] attribute btVector3 m_convexFromWorld;
+  [Value] attribute btVector3 m_convexToWorld;
+  [Value] attribute btVector3Array m_hitNormalWorld;
+  [Value] attribute btVector3Array m_hitPointWorld;
+  [Value] attribute btScalarArray m_hitFractions;
+};
+AllHitsConvexResultCallback implements ConvexResultCallback;
+
 interface btCollisionShape {
   void setLocalScaling([Const, Ref] btVector3 scaling);
   [Const, Ref] btVector3 getLocalScaling();
@@ -1021,6 +1035,13 @@ interface btActionInterface {
     void updateAction (btCollisionWorld collisionWorld, float deltaTimeStep);
 };
 
+[JSImplementation="btActionInterface"]
+interface ConcreteActionInterface {
+    void ConcreteActionInterface();
+    void updateAction (btCollisionWorld collisionWorld, float deltaTimeStep);
+    void debugDraw(btIDebugDraw debugDrawer);
+};
+
 interface btKinematicCharacterController {
   void btKinematicCharacterController(btPairCachingGhostObject ghostObject, btConvexShape convexShape, float stepHeight, optional long upAxis);
 
@@ -1046,6 +1067,24 @@ interface btKinematicCharacterController {
   void setUpInterpolate (boolean value);
 };
 btKinematicCharacterController implements btActionInterface;
+
+[Prefix="btPhysicsResolver::"]
+interface OverlapResultCallback {
+  float debug(float value);
+  float addSingleResult([Ref] btManifoldPoint cp);
+};
+
+[JSImplementation="OverlapResultCallback"]
+interface ConcreteOverlapResultCallback {
+  void ConcreteOverlapResultCallback();
+  float debug(float value);
+  float addSingleResult([Ref] btManifoldPoint cp);
+};
+
+interface btPhysicsResolver {
+  void btPhysicsResolver();
+  void overlap(btPairCachingGhostObject ghostObject, btCollisionWorld collisionWorld, [Ref] OverlapResultCallback resultCallback);
+};
 
 interface btRaycastVehicle {
   void btRaycastVehicle([Const, Ref] btVehicleTuning tuning, btRigidBody chassis, btVehicleRaycaster raycaster);

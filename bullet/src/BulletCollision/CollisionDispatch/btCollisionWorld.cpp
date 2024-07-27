@@ -64,8 +64,6 @@ subject to the following restrictions:
 #include "BulletCollision/CollisionShapes/btTriangleMeshShape.h"
 #include "BulletCollision/CollisionShapes/btStaticPlaneShape.h"
 
-
-
 btCollisionWorld::btCollisionWorld(btDispatcher* dispatcher,btBroadphaseInterface* pairCache, btCollisionConfiguration* collisionConfiguration)
 :m_dispatcher1(dispatcher),
 m_broadphasePairCache(pairCache),
@@ -1003,9 +1001,7 @@ struct btSingleSweepCallback : public btBroadphaseRayCallback
 	}
 };
 
-
-
-void	btCollisionWorld::convexSweepTest(const btConvexShape* castShape, const btTransform& convexFromWorld, const btTransform& convexToWorld, ConvexResultCallback& resultCallback, btScalar allowedCcdPenetration) const
+void btCollisionWorld::convexSweepTest(const btConvexShape* castShape, const btTransform& convexFromWorld, const btTransform& convexToWorld, ConvexResultCallback& resultCallback, btScalar allowedCcdPenetration) const
 {
 
 	BT_PROFILE("convexSweepTest");
@@ -1550,4 +1546,3 @@ void	btCollisionWorld::serialize(btSerializer* serializer)
 	
 	serializer->finishSerialization();
 }
-

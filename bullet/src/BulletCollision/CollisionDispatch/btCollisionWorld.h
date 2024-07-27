@@ -204,7 +204,7 @@ public:
 	struct	RayResultCallback
 	{
 		btScalar	m_closestHitFraction;
-		const btCollisionObject*		m_collisionObject;
+		const btCollisionObject* m_collisionObject;
 		short int	m_collisionFilterGroup;
 		short int	m_collisionFilterMask;
 		//@BP Mod - Custom flags, currently used to enable backface culling on tri-meshes, see btRaycastCallback.h. Apply any of the EFlags defined there on m_flags here to invoke.
@@ -213,7 +213,8 @@ public:
 		virtual ~RayResultCallback()
 		{
 		}
-		bool	hasHit() const
+
+		bool hasHit() const
 		{
 			return (m_collisionObject != 0);
 		}
@@ -253,20 +254,22 @@ public:
 		btVector3	m_hitNormalWorld;
 		btVector3	m_hitPointWorld;
 			
-		virtual	btScalar	addSingleResult(LocalRayResult& rayResult,bool normalInWorldSpace)
+		virtual	btScalar addSingleResult(LocalRayResult& rayResult,bool normalInWorldSpace)
 		{
 			//caller already does the filter on the m_closestHitFraction
 			btAssert(rayResult.m_hitFraction <= m_closestHitFraction);
 			
 			m_closestHitFraction = rayResult.m_hitFraction;
 			m_collisionObject = rayResult.m_collisionObject;
+
 			if (normalInWorldSpace)
 			{
 				m_hitNormalWorld = rayResult.m_hitNormalLocal;
-			} else
+			}
+			else
 			{
 				///need to transform normal into worldspace
-				m_hitNormalWorld = m_collisionObject->getWorldTransform().getBasis()*rayResult.m_hitNormalLocal;
+				m_hitNormalWorld = m_collisionObject->getWorldTransform().getBasis() * rayResult.m_hitNormalLocal;
 			}
 			m_hitPointWorld.setInterpolate3(m_rayFromWorld,m_rayToWorld,rayResult.m_hitFraction);
 			return rayResult.m_hitFraction;
@@ -290,7 +293,7 @@ public:
 		btAlignedObjectArray<btVector3>	m_hitPointWorld;
 		btAlignedObjectArray<btScalar> m_hitFractions;
 			
-		virtual	btScalar	addSingleResult(LocalRayResult& rayResult,bool normalInWorldSpace)
+		virtual	btScalar addSingleResult(LocalRayResult& rayResult,bool normalInWorldSpace)
 		{
 			m_collisionObject = rayResult.m_collisionObject;
 			m_collisionObjects.push_back(rayResult.m_collisionObject);
@@ -312,39 +315,39 @@ public:
 		}
 	};
 
-
 	struct LocalConvexResult
 	{
-		LocalConvexResult(const btCollisionObject*	hitCollisionObject, 
+		LocalConvexResult(
+			const btCollisionObject* hitCollisionObject, 
 			LocalShapeInfo*	localShapeInfo,
-			const btVector3&		hitNormalLocal,
-			const btVector3&		hitPointLocal,
+			const btVector3& hitNormalLocal,
+			const btVector3& hitPointLocal,
 			btScalar hitFraction
-			)
-		:m_hitCollisionObject(hitCollisionObject),
-		m_localShapeInfo(localShapeInfo),
-		m_hitNormalLocal(hitNormalLocal),
-		m_hitPointLocal(hitPointLocal),
-		m_hitFraction(hitFraction)
+		):
+			m_hitCollisionObject(hitCollisionObject),
+			m_localShapeInfo(localShapeInfo),
+			m_hitNormalLocal(hitNormalLocal),
+			m_hitPointLocal(hitPointLocal),
+			m_hitFraction(hitFraction)
 		{
 		}
 
-		const btCollisionObject*		m_hitCollisionObject;
-		LocalShapeInfo*			m_localShapeInfo;
-		btVector3				m_hitNormalLocal;
-		btVector3				m_hitPointLocal;
-		btScalar				m_hitFraction;
+		const btCollisionObject* m_hitCollisionObject;
+		LocalShapeInfo* m_localShapeInfo;
+		btVector3 m_hitNormalLocal;
+		btVector3 m_hitPointLocal;
+		btScalar m_hitFraction;
 	};
 
 	///RayResultCallback is used to report new raycast results
-	struct	ConvexResultCallback
+	struct ConvexResultCallback
 	{
 		btScalar	m_closestHitFraction;
 		short int	m_collisionFilterGroup;
 		short int	m_collisionFilterMask;
 		
-		ConvexResultCallback()
-			:m_closestHitFraction(btScalar(1.)),
+		ConvexResultCallback():
+			m_closestHitFraction(btScalar(1.)),
 			m_collisionFilterGroup(btBroadphaseProxy::DefaultFilter),
 			m_collisionFilterMask(btBroadphaseProxy::AllFilter)
 		{
@@ -354,12 +357,10 @@ public:
 		{
 		}
 		
-		bool	hasHit() const
+		virtual bool hasHit() const
 		{
 			return (m_closestHitFraction < btScalar(1.));
 		}
-
-		
 
 		virtual bool needsCollision(btBroadphaseProxy* proxy0) const
 		{
@@ -368,41 +369,94 @@ public:
 			return collides;
 		}
 
-		virtual	btScalar	addSingleResult(LocalConvexResult& convexResult,bool normalInWorldSpace) = 0;
+		virtual	btScalar addSingleResult(LocalConvexResult& convexResult, bool normalInWorldSpace) = 0;
 	};
 
-	struct	ClosestConvexResultCallback : public ConvexResultCallback
+	struct ClosestConvexResultCallback : public ConvexResultCallback
 	{
-		ClosestConvexResultCallback(const btVector3&	convexFromWorld,const btVector3&	convexToWorld)
-		:m_convexFromWorld(convexFromWorld),
-		m_convexToWorld(convexToWorld),
-		m_hitCollisionObject(0)
+		ClosestConvexResultCallback(const btVector3& convexFromWorld, const btVector3& convexToWorld):
+			m_convexFromWorld(convexFromWorld),
+			m_convexToWorld(convexToWorld),
+			m_hitCollisionObject(0)
 		{
 		}
 
-		btVector3	m_convexFromWorld;//used to calculate hitPointWorld from hitFraction
-		btVector3	m_convexToWorld;
+		btVector3 m_convexFromWorld;//used to calculate hitPointWorld from hitFraction
+		btVector3 m_convexToWorld;
 
-		btVector3	m_hitNormalWorld;
-		btVector3	m_hitPointWorld;
-		const btCollisionObject*	m_hitCollisionObject;
-		
-		virtual	btScalar	addSingleResult(LocalConvexResult& convexResult,bool normalInWorldSpace)
+		btVector3 m_hitNormalWorld;
+		btVector3 m_hitPointWorld;
+
+		const btCollisionObject* m_hitCollisionObject;
+
+		virtual	btScalar addSingleResult(LocalConvexResult& convexResult, bool normalInWorldSpace)
 		{
-//caller already does the filter on the m_closestHitFraction
+			//caller already does the filter on the m_closestHitFraction
 			btAssert(convexResult.m_hitFraction <= m_closestHitFraction);
 						
 			m_closestHitFraction = convexResult.m_hitFraction;
 			m_hitCollisionObject = convexResult.m_hitCollisionObject;
+
 			if (normalInWorldSpace)
 			{
 				m_hitNormalWorld = convexResult.m_hitNormalLocal;
-			} else
+			}
+			else
 			{
 				///need to transform normal into worldspace
-				m_hitNormalWorld = m_hitCollisionObject->getWorldTransform().getBasis()*convexResult.m_hitNormalLocal;
+				m_hitNormalWorld = m_hitCollisionObject->getWorldTransform().getBasis() * convexResult.m_hitNormalLocal;
 			}
+
 			m_hitPointWorld = convexResult.m_hitPointLocal;
+			
+			return convexResult.m_hitFraction;
+		}
+	};
+
+	struct AllHitsConvexResultCallback : public ConvexResultCallback
+	{
+		AllHitsConvexResultCallback(const btVector3& convexFromWorld, const btVector3& convexToWorld):
+			m_convexFromWorld(convexFromWorld),
+			m_convexToWorld(convexToWorld),
+			m_closestHitCollisionObject(0),
+			m_closestHitCollisionFraction(btScalar(1.))
+		{
+		}
+
+		virtual bool hasHit() const
+		{
+			return (m_closestHitCollisionObject != 0);
+		}
+
+		const btCollisionObject* m_closestHitCollisionObject;
+
+		btScalar m_closestHitCollisionFraction;
+
+		btAlignedObjectArray<const btCollisionObject*> m_hitCollisionObjects;
+
+		btVector3 m_convexFromWorld; //used to calculate hitPointWorld from hitFraction
+		btVector3 m_convexToWorld;
+
+		btAlignedObjectArray<btVector3>	m_hitNormalWorld;
+		btAlignedObjectArray<btVector3>	m_hitPointWorld;
+		btAlignedObjectArray<btScalar>  m_hitFractions;
+		
+		virtual	btScalar addSingleResult(LocalConvexResult& convexResult, bool normalInWorldSpace)
+		{
+			if (convexResult.m_hitFraction <= m_closestHitCollisionFraction) {
+				m_closestHitCollisionObject   = convexResult.m_hitCollisionObject;
+				m_closestHitCollisionFraction = convexResult.m_hitFraction;
+			}
+
+			btVector3 hitNormalWorld = normalInWorldSpace
+				? convexResult.m_hitNormalLocal
+				: convexResult.m_hitCollisionObject->getWorldTransform().getBasis() * convexResult.m_hitNormalLocal; ///need to transform normal into worldspace
+			
+			m_hitCollisionObjects.push_back(convexResult.m_hitCollisionObject);
+			m_hitNormalWorld.push_back(hitNormalWorld);
+			m_hitPointWorld.push_back(convexResult.m_hitPointLocal);
+			m_hitFractions.push_back(convexResult.m_hitFraction);
+			
 			return convexResult.m_hitFraction;
 		}
 	};
@@ -518,8 +572,7 @@ public:
 	}
 
 	///Preliminary serialization test for Bullet 2.76. Loading those files requires a separate parser (Bullet/Demos/SerializeDemo)
-	virtual	void	serialize(btSerializer* serializer);
-
+	virtual	void serialize(btSerializer* serializer);
 };
 
 
