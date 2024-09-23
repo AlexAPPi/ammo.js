@@ -407,6 +407,54 @@ public:
 		}
 	};
 
+	struct AllHitsConvexResultCallback : public ConvexResultCallback
+	{
+		AllHitsConvexResultCallback(const btVector3& convexFromWorld, const btVector3& convexToWorld):
+			m_convexFromWorld(convexFromWorld),
+			m_convexToWorld(convexToWorld),
+			m_closestHitCollisionObject(0),
+			m_closestHitCollisionFraction(btScalar(1.))
+		{
+		}
+
+		const btCollisionObject* m_closestHitCollisionObject;
+
+		btScalar m_closestHitCollisionFraction;
+
+		btAlignedObjectArray<const btCollisionObject*> m_hitCollisionObjects;
+
+		btVector3 m_convexFromWorld; //used to calculate hitPointWorld from hitFraction
+		btVector3 m_convexToWorld;
+
+		btAlignedObjectArray<btVector3>	m_hitNormalWorld;
+		btAlignedObjectArray<btVector3>	m_hitPointWorld;
+		btAlignedObjectArray<btScalar>  m_hitFractions;
+
+		virtual bool hasHit() const
+		{
+			return (m_closestHitCollisionObject != 0);
+		}
+
+		virtual	btScalar addSingleResult(LocalConvexResult& convexResult, bool normalInWorldSpace)
+		{
+			if (convexResult.m_hitFraction <= m_closestHitCollisionFraction) {
+				m_closestHitCollisionObject   = convexResult.m_hitCollisionObject;
+				m_closestHitCollisionFraction = convexResult.m_hitFraction;
+			}
+
+			btVector3 hitNormalWorld = normalInWorldSpace
+				? convexResult.m_hitNormalLocal
+				: convexResult.m_hitCollisionObject->getWorldTransform().getBasis() * convexResult.m_hitNormalLocal; ///need to transform normal into worldspace
+
+			m_hitCollisionObjects.push_back(convexResult.m_hitCollisionObject);
+			m_hitNormalWorld.push_back(hitNormalWorld);
+			m_hitPointWorld.push_back(convexResult.m_hitPointLocal);
+			m_hitFractions.push_back(convexResult.m_hitFraction);
+
+			return convexResult.m_hitFraction;
+		}
+	};
+
 	///ContactResultCallback is used to report contact points
 	struct	ContactResultCallback
 	{
