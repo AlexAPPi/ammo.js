@@ -197,7 +197,7 @@ interface btScalarArray {
 [Prefix="btCollisionWorld::"]
 interface AllHitsRayResultCallback {
   void AllHitsRayResultCallback([Const, Ref] btVector3 from, [Const, Ref] btVector3 to);
-  void reset([Const, Ref] btVector3 from, [Const, Ref] btVector3 to);
+  void reset([Const, Ref] btVector3 from, [Const, Ref] btVector3 to, optional long filterGroup, optional long filterMask);
   void clear();
   [Value] attribute btConstCollisionObjectArray m_collisionObjects;
   [Value] attribute btVector3 m_rayFromWorld;
@@ -273,7 +273,7 @@ ClosestConvexResultCallback implements ConvexResultCallback;
 [Prefix="btCollisionWorld::"]
 interface AllHitsConvexResultCallback {
   void AllHitsConvexResultCallback([Const, Ref] btVector3 convexFromWorld, [Const, Ref] btVector3 convexToWorld);
-  void reset([Const, Ref] btVector3 convexFromWorld, [Const, Ref] btVector3 convexToWorld);
+  void reset([Const, Ref] btVector3 convexFromWorld, [Const, Ref] btVector3 convexToWorld, optional long filterGroup, optional long filterMask);
   void clear();
   [Const] attribute btCollisionObject m_closestHitCollisionObject;
   attribute float m_closestHitCollisionFraction;

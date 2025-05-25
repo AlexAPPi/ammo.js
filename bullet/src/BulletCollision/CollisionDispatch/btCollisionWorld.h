@@ -293,15 +293,19 @@ subject to the following restrictions:
 		 btAlignedObjectArray<btVector3>	m_hitPointWorld;
 		 btAlignedObjectArray<btScalar> m_hitFractions;
 		 
-		 virtual void reset(const btVector3& rayFromWorld, const btVector3& rayToWorld) {
+		 virtual void reset(const btVector3& rayFromWorld, const btVector3& rayToWorld, const short filterGroup = btBroadphaseProxy::DefaultFilter, const short filterMask = btBroadphaseProxy::AllFilter) {
+			 clear(); 
 			 m_rayFromWorld = rayFromWorld;
 			 m_rayToWorld = rayToWorld;
-			 clear();
+			 m_collisionFilterGroup = filterGroup;
+			 m_collisionFilterMask = filterMask;
 		 }
  
 		 virtual void clear() {
 			 m_collisionObject = 0;
 			 m_closestHitFraction = btScalar(1.);
+			 m_collisionFilterGroup = btBroadphaseProxy::DefaultFilter;
+			 m_collisionFilterMask = btBroadphaseProxy::AllFilter;
 			 m_collisionObjects.clear();
 			 m_hitNormalWorld.clear();
 			 m_hitPointWorld.clear();
@@ -455,15 +459,19 @@ subject to the following restrictions:
 		 btAlignedObjectArray<btVector3>	m_hitPointWorld;
 		 btAlignedObjectArray<btScalar>  m_hitFractions;
 		 
-		 virtual void reset(const btVector3& convexFromWorld, const btVector3& convexToWorld) {
+		 virtual void reset(const btVector3& convexFromWorld, const btVector3& convexToWorld, const short filterGroup = btBroadphaseProxy::DefaultFilter, const short filterMask = btBroadphaseProxy::AllFilter) {
+			 clear();
 			 m_convexFromWorld = convexFromWorld;
 			 m_convexToWorld = convexToWorld;
-			 clear();
+			 m_collisionFilterGroup = filterGroup;
+			 m_collisionFilterMask = filterMask;
 		 }
  
 		 virtual void clear() {
 			 m_closestHitCollisionObject = 0;
 			 m_closestHitCollisionFraction = btScalar(1.);
+			 m_collisionFilterGroup = btBroadphaseProxy::DefaultFilter;
+			 m_collisionFilterMask = btBroadphaseProxy::AllFilter;
 			 m_hitCollisionObjects.clear();
 			 m_hitNormalWorld.clear();
 			 m_hitPointWorld.clear();
