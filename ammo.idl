@@ -153,6 +153,9 @@ interface btCollisionObject {
   VoidPtr getUserPointer();
   void setUserPointer(VoidPtr userPointer);
   [Const] btBroadphaseProxy getBroadphaseHandle();
+  [Const, Ref] btTransform getInterpolationWorldTransform();
+  [Const, Ref] btVector3 getInterpolationLinearVelocity();
+  [Const, Ref] btVector3 getInterpolationAngularVelocity();
 };
 
 [NoDelete]
